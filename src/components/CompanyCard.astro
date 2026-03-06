@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  companyName: string;
+  description: string;
+  logoFilename: string;
+  slug: string;
+  products: string[];
+  body: string;
+}
+
+const { companyName, description, logoFilename, slug, products, body } = Astro.props;
+
+// Dynamic image imports for company logos
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/images/companies/*.png', { eager: true });
+const logoPath = `../assets/images/companies/${logoFilename}`;
+const logoImage = images[logoPath]?.default;
+---
+
+<article
+  class="leaf-card cursor-pointer group"
+  data-company-card
+  data-company-name={companyName}
+  data-company-desc={description}
+  data-company-body={body}
+  data-company-products={JSON.stringify(products)}
+  data-company-logo={logoFilename}
+  data-company-slug={slug}
+  role="button"
+  tabindex="0"
+  aria-label={`View details for ${companyName}`}
+>
+  <!-- Layer A: Logo -->
+  <div class="h-14 flex items-center">
+    {logoImage ? (
+      <Image
+        src={logoImage}
+        alt={`${companyName} logo`}
+        height={56}
+        width={200}
+        class="h-14 w-auto object-contain object-left"
+        loading="lazy"
+      />
+    ) : (
+      <div class="h-14 flex items-center text-text-main font-jakarta font-bold text-lg">
+        {companyName}
+      </div>
+    )}
+  </div>
+
+  <!-- Layer B: Description -->
+  <p class="text-sm text-gray-800 font-inter leading-relaxed max-w-[90%] line-clamp-2">
+    {description}
+  </p>
+
+  <!-- Layer C: CTA -->
+  <button class="btn-outline-blue mt-auto group-hover:bg-text-main group-hover:text-white group-hover:border-text-main">
+    More info
+    <svg class="w-3 h-3 fill-current ml-1.5" viewBox="0 0 12 12" aria-hidden="true">
+      <path d="M4.5 2L9 6l-4.5 4V2z"/>
+    </svg>
+  </button>
+</article>
+
+<script>
+  // Handle card click to open company modal
+  document.querySelectorAll('[data-company-card]').forEach(card => {
+    function handleOpen(): void {
+      const detail = {
+        name: (card as HTMLElement).dataset.companyName,
+        description: (card as HTMLElement).dataset.companyDesc,
+        body: (card as HTMLElement).dataset.companyBody,
+        products: JSON.parse((card as HTMLElement).dataset.companyProducts || '[]'),
+        logo: (card as HTMLElement).dataset.companyLogo,
+      };
+      window.dispatchEvent(new CustomEvent('open-company-modal', { detail }));
+    }
+
+    card.addEventListener('click', handleOpen);
+    card.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+        e.preventDefault();
+        handleOpen();
+      }
+    });
+  });
+</script>

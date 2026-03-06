@@ -1,0 +1,75 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-inter text-gray-900 bg-white overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-jakarta;
+  }
+
+  ::selection {
+    @apply bg-card-yellow text-text-main;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/40 backdrop-blur-md rounded-2xl border border-white/50;
+  }
+
+  .btn-primary {
+    @apply bg-text-main text-white rounded-full px-6 py-2.5 text-sm font-semibold
+           hover:bg-text-main/80 transition-colors duration-200 inline-flex items-center;
+  }
+
+  .btn-blue {
+    @apply bg-text-main text-white px-4 py-2 rounded-lg text-sm font-medium
+           hover:bg-text-main/80 transition-colors duration-200 inline-flex items-center;
+  }
+
+  .btn-outline-blue {
+    @apply border border-text-main text-text-main bg-transparent
+           text-xs font-semibold px-4 py-1.5 rounded-full
+           hover:bg-text-main hover:text-white transition-colors duration-200
+           inline-flex items-center;
+  }
+
+  .section-title {
+    @apply font-jakarta font-bold text-text-main text-3xl lg:text-4xl;
+  }
+
+  .leaf-card {
+    @apply bg-white shadow-sm hover:shadow-md transition-shadow duration-300
+           rounded-l-2xl rounded-r-[3rem] p-8 flex flex-col h-full items-start
+           justify-between space-y-5;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

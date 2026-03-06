@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import fitLogo from '../assets/images/fit_logo.png';
+---
+
+<header
+  id="main-header"
+  class="fixed w-full z-50 transition-all duration-300 bg-transparent"
+  role="banner"
+>
+  <div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6 lg:py-6 lg:px-12">
+    <!-- Logo -->
+    <a href="/" class="flex-shrink-0" aria-label="Flanders Investment & Trade - Home">
+      <Image
+        src={fitLogo}
+        alt="Flanders Investment & Trade Logo"
+        width={160}
+        height={48}
+        class="h-10 lg:h-12 w-auto"
+        loading="eager"
+      />
+    </a>
+
+    <!-- Right: Desktop navigation -->
+    <nav class="hidden lg:flex items-center gap-6" aria-label="Main navigation">
+      <a href="#companies" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
+        Companies
+      </a>
+      <a href="#gallery" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
+        Gallery
+      </a>
+      <a href="#faqs" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
+        FAQs
+      </a>
+    </nav>
+
+    <!-- Mobile Hamburger -->
+    <button
+      id="mobile-menu-btn"
+      class="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+    >
+      <span class="block w-6 h-0.5 bg-gray-900 transition-all duration-300 origin-center" id="bar-1"></span>
+      <span class="block w-6 h-0.5 bg-gray-900 transition-all duration-300" id="bar-2"></span>
+      <span class="block w-6 h-0.5 bg-gray-900 transition-all duration-300 origin-center" id="bar-3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Drawer -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden fixed inset-0 top-0 bg-white z-[60] transform translate-x-full transition-transform duration-300 ease-in-out"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mobile navigation"
+  >
+    <div class="flex flex-col h-full">
+      <div class="flex justify-between items-center py-4 px-6">
+        <Image
+          src={fitLogo}
+          alt="Flanders Investment & Trade Logo"
+          width={160}
+          height={48}
+          class="h-10 w-auto"
+          loading="lazy"
+        />
+        <button
+          id="mobile-menu-close"
+          class="w-10 h-10 flex items-center justify-center"
+          aria-label="Close navigation menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="flex flex-col items-center justify-center flex-1 gap-8" aria-label="Mobile navigation">
+        <a href="#companies" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>Companies</a>
+        <a href="#gallery" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>Gallery</a>
+        <a href="#faqs" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>FAQs</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('main-header') as HTMLElement;
+  const scrollThreshold = 50;
+
+  function updateHeader(): void {
+    if (window.scrollY > scrollThreshold) {
+      header.classList.remove('bg-transparent');
+      header.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-sm');
+    } else {
+      header.classList.add('bg-transparent');
+      header.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-sm');
+    }
+  }
+
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
+
+  const menuBtn = document.getElementById('mobile-menu-btn') as HTMLButtonElement;
+  const menuClose = document.getElementById('mobile-menu-close') as HTMLButtonElement;
+  const mobileMenu = document.getElementById('mobile-menu') as HTMLElement;
+  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+
+  function openMenu(): void {
+    mobileMenu.classList.remove('translate-x-full');
+    mobileMenu.classList.add('translate-x-0');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    menuClose.focus();
+  }
+
+  function closeMenu(): void {
+    mobileMenu.classList.add('translate-x-full');
+    mobileMenu.classList.remove('translate-x-0');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    menuBtn.focus();
+  }
+
+  menuBtn.addEventListener('click', openMenu);
+  menuClose.addEventListener('click', closeMenu);
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  // Escape key handler
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
+      closeMenu();
+    }
+  });
+
+  // Focus trap for mobile menu
+  mobileMenu.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = mobileMenu.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+</script>

@@ -1,0 +1,219 @@
+---
+import { Image } from 'astro:assets';
+import fitLogo from '../assets/images/fit_logo.png';
+import orgLogo from '../assets/images/organiser/Commercium-Africa-logo-dark-bg.webp';
+---
+
+<footer class="w-full bg-text-main py-12 lg:py-16" role="contentinfo">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-col lg:flex-row justify-between items-center gap-8">
+      <!-- Left: Logo -->
+      <div class="flex-shrink-0">
+        <Image
+          src={fitLogo}
+          alt="Flanders Investment & Trade Logo"
+          width={180}
+          height={54}
+          class="h-12 w-auto brightness-0 invert"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Right: organiser text + logo (two lines on desktop, stacked on mobile) -->
+      <div class="flex-shrink-0 w-full lg:w-auto">
+        <div class="flex flex-col items-center lg:items-end gap-2">
+          <p class="text-base text-gray-300 leading-tight text-center lg:text-right">
+            The Belgian Agrofood Trade mission is
+          </p>
+          <div class="flex items-center gap-2">
+            <p class="text-base text-gray-300 leading-tight text-center lg:text-right">
+              organised by
+            </p>
+            <button
+              type="button"
+              class="organiser-btn inline-flex items-center h-6"
+              data-organiser="commercium"
+              aria-label="Learn more about Commercium Africa"
+            >
+              <div id="commercium-logo" class="h-6">
+                <Image
+                  src={orgLogo}
+                  alt="Commercium Africa logo"
+                  class="h-full w-auto"
+                  loading="lazy"
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-gray-700 mt-8 pt-8">
+      <p class="text-center text-xs text-gray-500">
+        &copy; {new Date().getFullYear()} Flanders Investment &amp; Trade (FIT). All rights reserved.
+      </p>
+      <div class="mt-4 text-center space-x-4">
+        <a
+          href="#privacy"
+          class="text-xs text-gray-400 hover:text-white transition-colors duration-200"
+        >
+          Privacy Policy
+        </a>
+        <span class="text-gray-600">|</span>
+        <a
+          href="#terms"
+          class="text-xs text-gray-400 hover:text-white transition-colors duration-200"
+        >
+          Terms of Use
+        </a>
+      </div>
+     
+    </div>
+  </div>
+</footer>
+
+<!-- Organiser Popup Modal (Commercium Africa) -->
+<div id="organiser-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Organisation details">
+  <div class="modal-backdrop absolute inset-0 bg-black/50 backdrop-blur-md transition-opacity duration-300"></div>
+
+  <div class="modal-content relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
+    <div class="relative bg-text-main px-8 pt-8 pb-6">
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+      </div>
+      <button 
+        type="button" 
+        class="modal-close absolute top-4 right-4 w-9 h-9 rounded-full border-2 border-white/30 z-40 bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
+        aria-label="Close modal"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="relative z-10 flex flex-col items-center text-center">
+        <div id="modal-logo-wrapper" class="w-48 bg-white/80 rounded-2xl flex items-center justify-center p-3 mb-4">
+        </div>
+        <h3 id="modal-org-name" class="font-display text-xl font-bold text-white mb-1" style="display:none"></h3>
+        <p id="modal-org-tagline" class="text-white text-xs font-medium text-primary-300 uppercase tracking-wider"></p>
+      </div>
+    </div>
+    <div class="px-4 pb-8 -mt-1">
+      <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <div id="modal-body" class="text-center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Organiser data (Commercium only)
+const organisers = {
+  commercium: {
+    name: 'Commercium Africa',
+    logo: null, // we'll clone the footer logo DOM
+    tagline: 'Market Entry & Trade Advisory',
+    description: 'Commercium Africa is a leading market entry firm specializing in trade advisory and investment facilitation across Africa. They provide international organisations with on the ground support including market intelligence and local representation to help them navigate the African business landscape.',
+    website: 'https://commercium.africa'
+  }
+};
+
+const modal = document.getElementById('organiser-modal');
+const modalBody = document.getElementById('modal-body');
+const modalLogoWrapper = document.getElementById('modal-logo-wrapper');
+const modalOrgName = document.getElementById('modal-org-name');
+const modalOrgTagline = document.getElementById('modal-org-tagline');
+const modalContent = modal?.querySelector('.modal-content');
+const modalBackdrop = modal?.querySelector('.modal-backdrop');
+const closeBtn = modal?.querySelector('.modal-close');
+const organiserBtns = document.querySelectorAll('.organiser-btn');
+
+function openModal(organiserId) {
+  const org = organisers[organiserId];
+  if (!org || !modal || !modalBody || !modalContent || !modalLogoWrapper || !modalOrgName || !modalOrgTagline) return;
+
+  // If we have a footer DOM logo, clone it; otherwise fallback to text
+  const footerLogo = document.getElementById('commercium-logo');
+  if (footerLogo) {
+    modalLogoWrapper.innerHTML = footerLogo.innerHTML;
+  } else if (org.logo) {
+    modalLogoWrapper.innerHTML = `<img src="${org.logo}" alt="${org.name}" class="max-h-30 max-w-30 w-auto object-contain" />`;
+  } else {
+    modalLogoWrapper.textContent = org.name;
+  }
+
+  modalOrgName.textContent = org.name;
+  modalOrgTagline.textContent = org.tagline;
+
+  modalBody.innerHTML = `
+    <p class="text-gray-600 text-sm leading-relaxed mb-6">${org.description}</p>
+    <a 
+      href="${org.website}" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn-blue inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl hover:shadow-lg transition-all"
+    >
+      Visit Website
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+    </a>
+  `;
+
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    modalContent.classList.remove('scale-95', 'opacity-0');
+    modalContent.classList.add('scale-100', 'opacity-100');
+  });
+  setTimeout(() => closeBtn?.focus(), 100);
+}
+
+function closeModal() {
+  if (!modal || !modalContent) return;
+  modalContent.classList.remove('scale-100', 'opacity-100');
+  modalContent.classList.add('scale-95', 'opacity-0');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }, 300);
+  lastFocusedOrganiserBtn?.focus();
+}
+
+let lastFocusedOrganiserBtn = null;
+organiserBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    lastFocusedOrganiserBtn = btn;
+    const organiserId = btn.getAttribute('data-organiser');
+    if (organiserId) openModal(organiserId);
+  });
+});
+
+closeBtn?.addEventListener('click', closeModal);
+modalBackdrop?.addEventListener('click', closeModal);
+// also allow clicking the container itself (including padding areas) to close
+modal?.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (modal?.classList.contains('hidden')) return;
+  if (e.key === 'Escape') { closeModal(); return; }
+  if (e.key === 'Tab' && modalContent) {
+    const focusable = modalContent.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+});
+</script>

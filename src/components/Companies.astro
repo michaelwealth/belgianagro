@@ -1,0 +1,41 @@
+---
+import CompanyCard from './CompanyCard.astro';
+import { companies as dataCompanies } from '../data/company-info';
+
+const companies = dataCompanies;
+---
+
+<section
+  id="companies"
+  class="w-full py-16 lg:py-24 relative bg-bg-cream"
+  aria-labelledby="companies-heading"
+>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <!-- Section Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <span class="inline-block bg-text-main/10 text-text-main rounded-full px-4 py-1.5 text-sm font-medium mb-4">
+        Our Exhibitors
+      </span>
+      <h2 id="companies-heading" class="section-title mb-4">
+        Participating Companies
+      </h2>
+      <p class="text-text-light-blue text-base lg:text-lg max-w-2xl mx-auto">
+        Connect with leading Belgian agrofood companies showcasing premium products and innovative solutions at the Flanders pavilion.
+      </p>
+    </div>
+
+    <!-- Company Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {companies.map((company) => (
+        <CompanyCard
+          companyName={company.name}
+          description={company.short || ''}
+          logoFilename={company.logo}
+          slug={company.slug}
+          products={company.products || []}
+          body={company.bodyHtml || ''}
+        />
+      ))}
+    </div>
+  </div>
+</section>

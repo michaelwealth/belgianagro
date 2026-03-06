@@ -1,0 +1,118 @@
+---
+/**
+ * Cookie Consent Banner
+ * GDPR (EU) and NDPR (Nigeria) compliant with granular consent options.
+ * Fixed to bottom of screen with dark-mode styling.
+ */
+---
+
+<div
+  id="cookie-banner"
+  class="fixed bottom-4 left-4 right-4 md:w-max md:max-w-2xl md:left-1/2 md:-translate-x-1/2 z-[100] opacity-0 pointer-events-none transition-opacity duration-500"
+  role="dialog"
+  aria-label="Cookie consent"
+  aria-modal="false"
+>
+  <div class="bg-gray-900 text-white rounded-2xl p-6 shadow-2xl">
+    <div class="flex flex-col gap-4">
+      <!-- Header -->
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 class="font-jakarta font-bold text-base mb-1">We value your privacy</h3>
+          <p class="text-gray-400 text-xs leading-relaxed">
+            We use cookies to enhance your browsing experience, serve personalized content, and analyze site traffic. Under GDPR and NDPR regulations, we need your consent.
+          </p>
+        </div>
+      </div>
+
+      <!-- Consent Options -->
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-6">
+        <label class="flex items-center gap-2 text-sm cursor-not-allowed">
+          <input
+            type="checkbox"
+            checked
+            disabled
+            class="w-4 h-4 rounded accent-white"
+          />
+          <span class="text-gray-300">Necessary</span>
+        </label>
+        <label class="flex items-center gap-2 text-sm cursor-pointer group">
+          <input
+            type="checkbox"
+            id="cookie-analytics"
+            class="w-4 h-4 rounded accent-white cursor-pointer"
+          />
+          <span class="text-gray-300 group-hover:text-white transition-colors">Analytics</span>
+        </label>
+        <label class="flex items-center gap-2 text-sm cursor-pointer group">
+          <input
+            type="checkbox"
+            id="cookie-marketing"
+            class="w-4 h-4 rounded accent-white cursor-pointer"
+          />
+          <span class="text-gray-300 group-hover:text-white transition-colors">Marketing</span>
+        </label>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <button
+          id="cookie-accept-all"
+          class="bg-white text-gray-900 hover:bg-gray-200 text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 flex-1 sm:flex-none"
+        >
+          Accept All
+        </button>
+        <button
+          id="cookie-accept-selected"
+          class="bg-white/10 hover:bg-white/20 text-white text-sm font-medium px-5 py-2.5 rounded-full transition-colors duration-200 border border-white/20 flex-1 sm:flex-none"
+        >
+          Accept Selected
+        </button>
+        <button
+          id="cookie-reject"
+          class="text-gray-400 hover:text-white text-sm font-medium px-5 py-2.5 transition-colors duration-200 flex-1 sm:flex-none"
+        >
+          Reject All
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById('cookie-banner') as HTMLElement;
+  const acceptAll = document.getElementById('cookie-accept-all') as HTMLButtonElement;
+  const acceptSelected = document.getElementById('cookie-accept-selected') as HTMLButtonElement;
+  const rejectAll = document.getElementById('cookie-reject') as HTMLButtonElement;
+  const analyticsCheckbox = document.getElementById('cookie-analytics') as HTMLInputElement;
+  const marketingCheckbox = document.getElementById('cookie-marketing') as HTMLInputElement;
+
+  // Check if consent already given
+  const consentGiven = localStorage.getItem('cookie-consent');
+
+  if (!consentGiven) {
+    // Show banner after a short delay for better UX
+    setTimeout(() => {
+      banner.classList.remove('opacity-0', 'pointer-events-none');
+      banner.classList.add('opacity-100', 'pointer-events-auto');
+    }, 1500);
+  }
+
+  function saveConsent(analytics: boolean, marketing: boolean): void {
+    const consent = {
+      necessary: true,
+      analytics,
+      marketing,
+      timestamp: new Date().toISOString(),
+    };
+    localStorage.setItem('cookie-consent', JSON.stringify(consent));
+    banner.classList.add('opacity-0', 'pointer-events-none');
+    banner.classList.remove('opacity-100', 'pointer-events-auto');
+  }
+
+  acceptAll.addEventListener('click', () => saveConsent(true, true));
+  acceptSelected.addEventListener('click', () =>
+    saveConsent(analyticsCheckbox.checked, marketingCheckbox.checked)
+  );
+  rejectAll.addEventListener('click', () => saveConsent(false, false));
+</script>

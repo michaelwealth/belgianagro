@@ -1,0 +1,195 @@
+---
+/**
+ * Company Modal
+ * Triggered by clicking a company card.
+ * Shows detailed description, product list, and "Schedule a meeting" CTA.
+ * Content is dynamically injected via CustomEvent from CompanyCard.
+ */
+---
+
+<div
+  id="company-modal"
+  class="fixed inset-0 z-[80] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Company details"
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-text-main/80 backdrop-blur-sm" data-company-modal-overlay></div>
+
+  <!-- Modal Body -->
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4 sm:p-6">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 lg:p-10 shadow-2xl animate-fade-in relative max-h-[90vh] overflow-y-auto">
+      <!-- Close Button -->
+      <button
+        class="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full border-2 border-text-main/20 hover:bg-gray-100 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-text-main"
+        id="company-modal-close"
+        data-modal-close
+        aria-label="Close company details"
+        title="Close"
+      >
+        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        <span class="sr-only">Close</span>
+      </button>
+
+      <!-- Company Logo -->
+      <div class="h-16 mb-6" id="company-modal-logo-container">
+        <!-- Logo injected dynamically -->
+      </div>
+
+      <!-- Company Name -->
+      <h2 id="company-modal-name" class="font-jakarta font-bold text-text-main text-2xl lg:text-3xl mb-4">
+        Company Name
+      </h2>
+
+      <!-- Description -->
+      <p id="company-modal-description" class="text-gray-700 font-inter text-base leading-relaxed mb-6">
+        Description will appear here.
+      </p>
+
+      <!-- Detailed Body -->
+      <div id="company-modal-body" class="text-gray-600 font-inter text-sm leading-relaxed mb-6 border-t border-gray-100 pt-6">
+        <!-- Body content injected dynamically -->
+      </div>
+
+      <!-- Products List -->
+      <div class="mb-8">
+        <h3 class="font-jakarta font-semibold text-text-main text-lg mb-3">Key Products & Services</h3>
+        <ul id="company-modal-products" class="space-y-2">
+          <!-- Products injected dynamically -->
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button class="btn-blue lg:w-2/5 justify-center py-3" data-modal="nav-modal" id="company-schedule-btn">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Register interest
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // dynamic logo imports same as CompanyCard
+  const logoImages = import.meta.glob('../assets/images/companies/*.png', { eager: true });
+
+  const companyModal = document.getElementById('company-modal') as HTMLElement;
+  const modalName = document.getElementById('company-modal-name') as HTMLElement;
+  const modalDesc = document.getElementById('company-modal-description') as HTMLElement;
+  const modalBody = document.getElementById('company-modal-body') as HTMLElement;
+  const modalProducts = document.getElementById('company-modal-products') as HTMLElement;
+  const modalLogo = document.getElementById('company-modal-logo-container') as HTMLElement;
+  const closeBtn = document.getElementById('company-modal-close') as HTMLButtonElement;
+  const overlay = companyModal.querySelector('[data-company-modal-overlay]') as HTMLElement;
+  const scheduleBtn = document.getElementById('company-schedule-btn') as HTMLButtonElement;
+
+  let lastFocusedElement: HTMLElement | null = null;
+
+  /** Escape HTML entities to prevent XSS in product list */
+  function escapeHtml(str: string): string {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+
+  function openCompanyModal(detail: { name: string; description: string; body: string; products: string[]; logo: string }): void {
+    lastFocusedElement = document.activeElement as HTMLElement;
+    modalName.textContent = detail.name;
+    modalDesc.textContent = detail.description;
+    // Body contains sanitized HTML from data files; inject as HTML for richer content
+    modalBody.innerHTML = detail.body;
+
+    // Render products with escaped HTML to prevent XSS
+    modalProducts.innerHTML = detail.products
+      .map(
+        (p: string) =>
+          `<li class="flex items-start gap-2">
+            <svg class="w-4 h-4 text-text-main flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="text-sm text-gray-700">${escapeHtml(p)}</span>
+          </li>`
+      )
+      .join('');
+
+    // Set logo image if available
+    if (detail.logo) {
+      const imgMeta = logoImages[`../assets/images/companies/${detail.logo}`];
+      if (imgMeta && imgMeta.default) {
+        const url = imgMeta.default.src;
+        modalLogo.innerHTML = `<img src="${url}" alt="${escapeHtml(detail.name)} logo" class="h-16 w-auto object-contain"/>`;
+      } else {
+        modalLogo.innerHTML = `<div class="h-16 flex items-center text-text-main font-jakarta font-bold text-xl">${escapeHtml(detail.name)}</div>`;
+      }
+    } else {
+      modalLogo.innerHTML = `<div class="h-16 flex items-center text-text-main font-jakarta font-bold text-xl">${escapeHtml(detail.name)}</div>`;
+    }
+
+    companyModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    // Move focus into modal
+    closeBtn.focus();
+  }
+
+  function closeCompanyModal(): void {
+    companyModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    // Restore focus to triggering element
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
+    lastFocusedElement = null;
+  }
+
+  // Listen for custom event from CompanyCard
+  window.addEventListener('open-company-modal', ((e: CustomEvent) => {
+    openCompanyModal(e.detail);
+  }) as EventListener);
+
+  closeBtn.addEventListener('click', closeCompanyModal);
+  overlay.addEventListener('click', closeCompanyModal);
+
+  // close if clicking the modal container outside the white card
+  companyModal.addEventListener('click', (e) => {
+    if (e.target === companyModal) {
+      closeCompanyModal();
+    }
+  });
+
+  // When schedule button is clicked in company modal, close it and open nav modal
+  scheduleBtn.addEventListener('click', () => {
+    closeCompanyModal();
+    document.querySelectorAll('[data-modal="nav-modal"]')[0]?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  });
+
+  // Escape key handler
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !companyModal.classList.contains('hidden')) {
+      closeCompanyModal();
+    }
+  });
+
+  // Focus trap within company modal
+  companyModal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = companyModal.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+</script>

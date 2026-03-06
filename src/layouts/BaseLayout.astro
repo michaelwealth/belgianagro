@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Discover premium Belgian agrofood companies at Agrofood Nigeria 2026. Visit the Flanders Investment & Trade pavilion to explore world-class food products and agricultural innovations from Belgium.',
+} = Astro.props;
+
+const canonicalUrl = 'https://belgianagro.pages.dev';
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Belgian Pavilion at Agrofood Nigeria 2026",
+  "description": description,
+  "startDate": "2026-03-24",
+  "endDate": "2026-03-26",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "Place",
+    "name": "Landmark Event Centre",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lagos",
+      "addressRegion": "Victoria Island",
+      "addressCountry": "NG"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Flanders Investment & Trade (FIT)",
+    "url": "https://www.flandersinvestmentandtrade.com"
+  }
+});
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Flanders Investment & Trade (FIT)" />
+    <meta name="keywords" content="Belgian agrofood, Flanders Investment Trade, Agrofood Nigeria 2026, Belgian Pavilion Lagos, Belgium food exports, Flanders companies Nigeria" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
+    />
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="/fonts/plus-jakarta-sans-latin-700.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Belgian Pavilion - Agrofood Nigeria 2026" />
+    <meta property="og:image" content={`${canonicalUrl}og-image.png`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${canonicalUrl}og-image.png`} />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={structuredData} />
+
+    <title>{title}</title>
+
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body class="font-inter text-gray-900 bg-white antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-text-main focus:text-white focus:px-4 focus:py-2 focus:rounded-lg"
+    >
+      Skip to main content
+    </a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "$ref": "#/definitions/events",
+  "definitions": {
+    "events": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "venue": {
+          "type": "string"
+        },
+        "venueDetail": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "pavilion",
+            "matchmaking"
+          ]
+        },
+        "cta": {
+          "type": "string"
+        },
+        "ctaLink": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number",
+          "default": 0
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "date",
+        "venue",
+        "venueDetail",
+        "type"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

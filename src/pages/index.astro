@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Companies from '../components/Companies.astro';
+import Gallery from '../components/Gallery.astro';
+import FAQs from '../components/FAQs.astro';
+import Footer from '../components/Footer.astro';
+import NavModal from '../components/NavModal.astro';
+import CompanyModal from '../components/CompanyModal.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { siteControls } from '../data/siteControls';
+---
+
+<BaseLayout title="Belgian Pavilion | Agrofood Nigeria 2026 | Flanders Investment & Trade">
+  <Header />
+
+  <main id="main-content">
+    <Hero />
+    {siteControls.showCompanies && <Companies />}
+    {siteControls.showGallery && <Gallery />}
+    {siteControls.showFAQs && <FAQs />}
+  </main>
+
+  <Footer />
+
+  <!-- Global Modals -->
+  <NavModal />
+  <CompanyModal />
+  <CookieBanner />
+</BaseLayout>

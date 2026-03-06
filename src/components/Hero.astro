@@ -1,0 +1,156 @@
+---
+import { Image } from 'astro:assets';
+import heroBg from '../assets/images/general/hero_bg-image.png';
+import heroProducts from '../assets/images/general/hero_products.png';
+import heroLeaves1 from '../assets/images/general/hero_leaves_1.png';
+import heroLeaves2 from '../assets/images/general/hero_leaves_2.png';
+---
+
+<section
+  id="hero"
+  class="relative overflow-hidden min-h-screen"
+  aria-label="Hero section"
+>
+  <!-- Background Image -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <Image
+      src={heroBg}
+      alt=""
+      class="w-full h-full object-cover object-center"
+      widths={[640, 1024, 1536, 2048]}
+      sizes="100vw"
+      loading="eager"
+    />
+  </div>
+
+  <!-- Subtle gradient overlay for readability -->
+  <div class="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-bg-glow/30" aria-hidden="true"></div>
+
+  <!-- Decorative Leaves -->
+  <!-- Leaf 1: Bottom Left -->
+  <Image
+    src={heroLeaves1}
+    alt=""
+    class="absolute z-0 pointer-events-none -bottom-4 -left-6 w-32 lg:-bottom-8 lg:-left-12 lg:w-72 animate-float"
+    loading="lazy"
+    aria-hidden="true"
+  />
+
+  <!-- Leaf 2: Top Center/Right (desktop only) -->
+  <Image
+    src={heroLeaves2}
+    alt=""
+    class="absolute z-0 pointer-events-none hidden lg:block lg:-top-4 lg:left-[45%] lg:w-96 animate-float"
+    style="animation-delay: 3s;"
+    loading="lazy"
+    aria-hidden="true"
+  />
+
+  <!-- Content Wrapper -->
+  <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-28 lg:pt-32 pb-12 lg:pb-20">
+
+    <!-- Mobile Layout: Image → Text → Card -->
+    <!-- Desktop Layout: Left (Text + Card) | Right (Image) -->
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+
+      <!-- Mobile: Product Image (shown first on mobile, hidden on desktop) -->
+      <div class="lg:hidden w-full flex justify-center animate-fade-in">
+        <Image
+          src={heroProducts}
+          alt="Premium Belgian agrofood products showcase"
+          class="w-full max-w-md rounded-[2rem] shadow-sm object-cover"
+          widths={[400, 640]}
+          sizes="(max-width: 1024px) 90vw, 50vw"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Left Column: Text + Event Card -->
+      <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+
+        <!-- H1 Headline -->
+        <h1 class="font-jakarta font-bold text-text-main text-4xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight mb-4 animate-fade-in">
+          Discover the excellence of companies in Flanders
+        </h1>
+
+        <!-- Sub-headline -->
+        <p class="text-text-main text-lg lg:text-xl font-medium mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+          Visit the Belgian Pavilion at Agrofood Nigeria 2026
+        </p>
+
+        <!-- Single Event Card -->
+        <div class="w-full max-w-md animate-fade-in-up" style="animation-delay: 0.25s;">
+          <div class="bg-card-yellow rounded-2xl rounded-tr-[3rem] p-6 lg:p-8 shadow-sm">
+            <div class="flex flex-col gap-4">
+              <!-- Date Row -->
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="#050505" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="font-semibold text-text-main">24 – 26 March 2026</span>
+              </div>
+
+              <!-- Time Row -->
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="#050505" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-semibold text-text-main">10:00 – 17:00 Daily</span>
+              </div>
+
+              <!-- Location Row -->
+              <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="#050505" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <p class="text-text-main">
+                  <span class="font-bold block">Landmark Event Centre,</span>
+                  <span class="block">Victoria Island, Lagos.</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Register Link -->
+            <div class="mt-4">
+              <button
+                class="text-sm font-bold text-text-main flex items-center gap-1 hover:gap-2 transition-all duration-200"
+                data-modal="nav-modal"
+              >
+                Register interest
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M4.5 2L9 6l-4.5 4V2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Image (desktop only) -->
+      <div class="hidden lg:flex w-full lg:w-1/2 justify-center animate-slide-in-right" style="animation-delay: 0.2s;">
+        <Image
+          src={heroProducts}
+          alt="Premium Belgian agrofood products showcase"
+          class="w-full max-w-2xl rounded-[2rem] shadow-sm object-cover"
+          widths={[640, 1024, 1536]}
+          sizes="50vw"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="flex justify-center mt-8 mb-4 animate-bounce-subtle">
+      <a
+        href="#companies"
+        class="border border-gray-400 rounded-full w-10 h-10 flex items-center justify-center text-gray-600 hover:border-text-main hover:text-text-main transition-colors"
+        aria-label="Scroll down to view companies"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

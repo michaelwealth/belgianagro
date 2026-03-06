@@ -1,0 +1,166 @@
+---
+/**
+ * Nav Modal (Register Interest)
+ * Triggered by "Register interest" buttons throughout the site.
+ * Shows event details for the Belgian Pavilion at Agrofood Nigeria 2026.
+ */
+import { events as dataEvents } from '../data/events';
+
+const events = dataEvents;
+---
+
+<div
+  id="nav-modal"
+  class="fixed inset-0 z-[80] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Register interest"
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-text-main/80 backdrop-blur-sm" data-modal-overlay></div>
+
+  <!-- Modal Body -->
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4 sm:p-6">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 lg:p-10 shadow-2xl animate-fade-in relative">
+      <!-- Close Button -->
+      <button
+        class="absolute top-4 right-4 w-12 h-12 flex items-center justify-center rounded-full border-2 border-text-main/20 z-30 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-text-main"
+        data-modal-close
+        aria-label="Close modal"
+        title="Close"
+      >
+        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        <span class="sr-only">Close</span>
+      </button>
+
+      <!-- Header -->
+      <div class="mb-8">
+        <h2 class="font-jakarta font-bold text-text-main text-2xl lg:text-3xl mb-2">
+          Belgian Pavilion
+        </h2>
+        <p class="text-gray-600 text-sm">
+          Agrofood Nigeria 2026
+        </p>
+      </div>
+
+      <!-- Event Info -->
+      <div class="bg-card-yellow rounded-2xl rounded-tr-[3rem] p-6 mb-6">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-text-main flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-sm font-semibold text-text-main">24 – 26 March 2026</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-text-main flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-sm font-semibold text-text-main">10:00 – 17:00 Daily</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-text-main flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span class="text-sm text-text-main">
+              <span class="font-semibold">Landmark Event Centre,</span> Victoria Island, Lagos
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex flex-col gap-3">
+        <a
+          href="#companies"
+          class="btn-blue w-full justify-center py-3"
+          data-modal-close
+        >
+          View companies
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Modal open/close logic
+  const navModal = document.getElementById('nav-modal') as HTMLElement;
+  let lastFocusedNavElement: HTMLElement | null = null;
+
+  function openNavModal(): void {
+    lastFocusedNavElement = document.activeElement as HTMLElement;
+    navModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    const firstFocusable = navModal.querySelector('button, a, [tabindex]:not([tabindex="-1"])') as HTMLElement;
+    firstFocusable?.focus();
+  }
+
+  function closeNavModal(): void {
+    navModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (lastFocusedNavElement && typeof lastFocusedNavElement.focus === 'function') {
+      lastFocusedNavElement.focus();
+    }
+    lastFocusedNavElement = null;
+  }
+
+  // Trigger buttons
+  document.querySelectorAll('[data-modal="nav-modal"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openNavModal();
+    });
+  });
+
+  // Close buttons and overlay
+  navModal.querySelectorAll('[data-modal-close]').forEach(btn => {
+    btn.addEventListener('click', closeNavModal);
+  });
+  navModal.querySelector('[data-modal-overlay]')?.addEventListener('click', closeNavModal);
+
+  // also close if the user clicks on the backdrop/container itself (outside the inner dialog)
+  navModal.addEventListener('click', (e) => {
+    if (e.target === navModal) {
+      closeNavModal();
+    }
+  });
+  // the white box sits inside another flex container with padding; clicks on that padding should also close
+  const navInner = navModal.querySelector('.relative.z-10');
+  navInner?.addEventListener('click', (e) => {
+    if (e.target === navInner) {
+      closeNavModal();
+    }
+  });
+
+  // Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !navModal.classList.contains('hidden')) {
+      closeNavModal();
+    }
+  });
+
+  // Focus trap within nav modal
+  navModal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = navModal.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+</script>

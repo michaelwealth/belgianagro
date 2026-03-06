@@ -1,0 +1,125 @@
+---
+import { faqs as dataFaqs } from '../data/faqs';
+
+const faqs = dataFaqs;
+---
+
+<section
+  id="faqs"
+  class="w-full py-16 lg:py-24 bg-bg-cream"
+  aria-labelledby="faqs-heading"
+>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <!-- Section Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <span class="inline-block bg-text-main/10 text-text-main rounded-full px-4 py-1.5 text-sm font-medium mb-4">
+        Questions
+      </span>
+      <h2 id="faqs-heading" class="section-title mb-4">
+        Frequently Asked Questions
+      </h2>
+      <p class="text-text-light-blue text-base lg:text-lg max-w-2xl mx-auto">
+        Everything you need to know about the Belgian Pavilion at Agrofood Nigeria 2026.
+      </p>
+    </div>
+
+    <!-- FAQ accordion (used on all screen sizes) -->
+    <div>
+      <div class="max-w-3xl mx-auto space-y-4">
+        {faqs.map((faq, i) => (
+          <div
+            class="bg-white rounded-2xl shadow-card overflow-hidden transition-all duration-500"
+            key={faq.id}
+          >
+            <button
+              class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-text-main"
+              aria-expanded={i === 0 ? 'true' : 'false'}
+              aria-controls={`faq-acc-panel-${i}`}
+              id={`faq-acc-btn-${i}`}
+              data-acc-index={i}
+            >
+              <span class="font-jakarta font-semibold text-text-main pr-4">
+                {faq.q}
+              </span>
+              <div
+                class="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center transition-transform duration-200"
+                data-icon-container
+              >
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </button>
+            <div
+              id={`faq-acc-panel-${i}`}
+              role="region"
+              aria-labelledby={`faq-acc-btn-${i}`}
+              class="overflow-hidden transition-all duration-300"
+              style={`max-height: ${i === 0 ? '2000px' : '0px'}`}
+            >
+              <div class="px-6 pb-6 pt-0">
+                <div class="pt-4 border-t border-gray-100">
+                  <p class="text-gray-600 leading-relaxed" set:html={faq.aHtml} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  // Enhanced mobile accordion: single-open + smooth max-height animation
+  function initFaqAccordionEnhanced(): void {
+    const buttons = Array.from(document.querySelectorAll('[data-acc-index]')) as HTMLElement[];
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = (btn as HTMLElement).dataset.accIndex!;
+        const panel = document.getElementById(`faq-acc-panel-${idx}`) as HTMLElement | null;
+
+        if (!panel) return;
+
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        // Close all panels first (single-open behaviour)
+        buttons.forEach(b => {
+          const i = (b as HTMLElement).dataset.accIndex!;
+          const p = document.getElementById(`faq-acc-panel-${i}`) as HTMLElement | null;
+          if (p && b !== btn) {
+            b.setAttribute('aria-expanded', 'false');
+            p.style.maxHeight = '0px';
+            const icon = b.querySelector('svg');
+            icon?.classList.remove('rotate-180');
+          }
+        });
+
+        // Toggle the clicked panel
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        if (isOpen) {
+          panel.style.maxHeight = '0px';
+          btn.querySelector('svg')?.classList.remove('rotate-180');
+        } else {
+          // expand to scrollHeight for smooth animation
+          panel.style.maxHeight = `${panel.scrollHeight}px`;
+          btn.querySelector('svg')?.classList.add('rotate-180');
+        }
+      });
+    });
+    // Ensure panels have explicit maxHeight initial value for CSS transition
+    document.querySelectorAll('[id^="faq-acc-panel-"]').forEach((p, i) => {
+      const el = p as HTMLElement;
+      if (i === 0) el.style.maxHeight = `${el.scrollHeight}px`;
+      else el.style.maxHeight = '0px';
+      el.style.transition = 'max-height 300ms ease';
+      el.style.overflow = 'hidden';
+    });
+  }
+
+  initFaqAccordionEnhanced();
+
+
+
+</script>
