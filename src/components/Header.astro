@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import fitLogo from '../assets/images/fit_logo.png';
+import { siteControls } from '../data/siteControls';
 ---
 
 <header
@@ -26,9 +27,11 @@ import fitLogo from '../assets/images/fit_logo.png';
       <a href="#companies" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
         Companies
       </a>
-      <a href="#gallery" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
-        Gallery
-      </a>
+      {siteControls.showGallery && (
+        <a href="#gallery" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
+          Gallery
+        </a>
+      )}
       <a href="#faqs" class="text-sm font-medium text-black hover:text-text-main/70 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded">
         FAQs
       </a>
@@ -78,7 +81,9 @@ import fitLogo from '../assets/images/fit_logo.png';
       </div>
       <nav class="flex flex-col items-center justify-center flex-1 gap-8" aria-label="Mobile navigation">
         <a href="#companies" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>Companies</a>
-        <a href="#gallery" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>Gallery</a>
+        {siteControls.showGallery && (
+          <a href="#gallery" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>Gallery</a>
+        )}
         <a href="#faqs" class="text-2xl font-jakarta font-semibold text-text-main hover:text-text-main/70 transition-colors focus:outline-none focus:ring-2 focus:ring-text-main focus:ring-offset-2 rounded" data-mobile-link>FAQs</a>
       </nav>
     </div>

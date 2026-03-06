@@ -66,24 +66,48 @@ const events = dataEvents;
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             <span class="text-sm text-text-main">
-              <span class="font-semibold">Landmark Event Centre,</span> Victoria Island, Lagos
+              <span class="font-semibold block">Landmark Event Centre,</span> Victoria Island, Lagos
             </span>
+          </div>
+          <!-- See companies moved into the yellow box after the address -->
+          <div class="mt-3">
+            <a
+              href="#companies"
+              class="inline-flex items-center gap-2 text-text-main hover:underline px-2 py-1 font-semibold text-sm"
+              data-modal-close
+            >
+              View companies
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="flex flex-col gap-3">
-        <a
-          href="#companies"
-          class="btn-blue w-full justify-center py-3"
-          data-modal-close
-        >
-          View companies
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </a>
+      <!-- (View companies relocated into the yellow event box) -->
+
+      <!-- Contact Email -->
+      <div class="mt-4 text-center">
+        <h3 class="text-sm font-semibold text-text-main mb-2">Register Interest</h3>
+        <div class="inline-flex items-center gap-6 bg-gray-50 rounded-full px-4 py-2">
+          <span id="nav-modal-email" class="text-lg font-medium text-text-main">lagos@fitagency.com</span>
+          <div class="flex items-center gap-3">
+            <button id="nav-email-copy" type="button" class="flex flex-col items-center px-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-text-main" aria-label="Copy email">
+              <svg class="w-6 h-6 text-gray-700" viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M19.53 8L14 2.47a.75.75 0 0 0-.53-.22H11A2.75 2.75 0 0 0 8.25 5v1.25H7A2.75 2.75 0 0 0 4.25 9v10A2.75 2.75 0 0 0 7 21.75h7A2.75 2.75 0 0 0 16.75 19v-1.25H17A2.75 2.75 0 0 0 19.75 15V8.5a.75.75 0 0 0-.22-.5m-5.28-3.19l2.94 2.94h-2.94Zm1 14.19A1.25 1.25 0 0 1 14 20.25H7A1.25 1.25 0 0 1 5.75 19V9A1.25 1.25 0 0 1 7 7.75h1.25V15A2.75 2.75 0 0 0 11 17.75h4.25ZM17 16.25h-6A1.25 1.25 0 0 1 9.75 15V5A1.25 1.25 0 0 1 11 3.75h1.75V8.5a.76.76 0 0 0 .75.75h4.75V15A1.25 1.25 0 0 1 17 16.25"/>
+              </svg>
+              <span class="text-[0.5rem] text-gray-500 mt-1">Copy</span>
+            </button>
+            <a id="nav-email-send" href="mailto:lagos@fitagency.com?subject=Register%20interest%20-%20Belgian%20Pavilion" class="flex flex-col items-center px-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-text-main" aria-label="Send email">
+              <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <span class="text-[0.5rem] text-gray-500 mt-1">Email</span>
+            </a>
+          </div>
+        </div>
+        <div id="nav-email-status" class="text-green-600 text-sm mt-2" aria-live="polite"></div>
       </div>
     </div>
   </div>
@@ -163,4 +187,26 @@ const events = dataEvents;
       first.focus();
     }
   });
+
+  // Email copy-to-clipboard handler
+  const emailCopyBtn = navModal.querySelector('#nav-email-copy') as HTMLButtonElement | null;
+  const emailTextEl = navModal.querySelector('#nav-modal-email') as HTMLElement | null;
+  const emailStatus = navModal.querySelector('#nav-email-status') as HTMLElement | null;
+  if (emailCopyBtn && emailTextEl) {
+    emailCopyBtn.addEventListener('click', async () => {
+      const txt = (emailTextEl.textContent || '').trim();
+      try {
+        await navigator.clipboard.writeText(txt);
+        if (emailStatus) {
+          emailStatus.textContent = 'Email copied to clipboard';
+          setTimeout(() => { if (emailStatus) emailStatus.textContent = ''; }, 2000);
+        }
+      } catch (err) {
+        if (emailStatus) {
+          emailStatus.textContent = 'Unable to copy';
+          setTimeout(() => { if (emailStatus) emailStatus.textContent = ''; }, 2000);
+        }
+      }
+    });
+  }
 </script>
