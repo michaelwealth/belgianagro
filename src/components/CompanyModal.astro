@@ -87,6 +87,7 @@
   const modalLogo = document.getElementById('company-modal-logo-container') as HTMLElement;
   const closeBtn = document.getElementById('company-modal-close') as HTMLButtonElement;
   const overlay = companyModal.querySelector('[data-company-modal-overlay]') as HTMLElement;
+  const modalCard = companyModal.querySelector('.bg-white.rounded-2xl') as HTMLElement;
   const scheduleBtn = document.getElementById('company-schedule-btn') as HTMLButtonElement;
 
   let lastFocusedElement: HTMLElement | null = null;
@@ -153,12 +154,22 @@
   }) as EventListener);
 
   closeBtn.addEventListener('click', closeCompanyModal);
-  overlay.addEventListener('click', closeCompanyModal);
+  if (overlay) overlay.addEventListener('click', closeCompanyModal);
 
-  // close if clicking the modal container outside the white card
+  // close if clicking anywhere outside the white card (more robust)
   companyModal.addEventListener('click', (e) => {
-    if (e.target === companyModal) {
-      closeCompanyModal();
+    try {
+      const target = e.target as Node;
+      if (!modalCard) {
+        // fallback to previous behavior
+        if (target === companyModal) closeCompanyModal();
+        return;
+      }
+      if (!modalCard.contains(target)) {
+        closeCompanyModal();
+      }
+    } catch (err) {
+      // ignore and do not block
     }
   });
 

@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import fitLogo from '../assets/images/fit_logo.png';
+import Footer from '../components/Footer.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found — Belgian Pavilion</title>
+  </head>
+  <body class="font-inter bg-white text-gray-900 antialiased min-h-screen flex flex-col">
+    <!-- Minimal header (logo only) -->
+    <header class="w-full py-4">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center">
+        <a href="/" aria-label="Home" class="inline-block">
+          <Image src={fitLogo} alt="FIT logo" width={160} height={48} class="h-10 w-auto" />
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="flex-1 flex items-center justify-center">
+      <div class="max-w-4xl mx-auto text-center px-6 py-20">
+        <div class="relative mx-auto mb-8" style="width:9rem; height:9rem;">
+          <div class="absolute inset-0 flex items-center justify-center rounded-full bg-card-yellow/80 shadow-xl z-20">
+            <h1 class="text-4xl font-jakarta font-extrabold text-text-main relative z-30">404</h1>
+          </div>
+          <!-- Decorative SVG: subtle Belgian-themed motif -->
+          <svg aria-hidden="true" class="absolute -bottom-6 -right-6 w-20 h-20 z-10" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="#FDF7D5" fill-opacity="0.95"/>
+            <rect x="50" y="10" width="50" height="50" rx="10" fill="#FCFFEB" fill-opacity="0.9"/>
+            <path d="M15 80c12-10 30-8 44 3s32 18 44 8" stroke="#E6C77A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+          </svg>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-jakarta font-bold mb-4">Wrong port of call</h2>
+        <p class="text-gray-600 mb-8">It looks like our coordinates were slightly off, and this page has gone missing in transit</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/" class="btn-blue inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold">Return home</a>
+          <a href="/#companies" class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-gray-200 text-text-main hover:bg-gray-50">View companies</a>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>

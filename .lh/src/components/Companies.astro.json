@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/components/Companies.astro",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1772810630816,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1772810630816,
+            "name": "Commit-0",
+            "content": "---\nimport CompanyCard from './CompanyCard.astro';\nimport { companies as dataCompanies } from '../data/company-info';\n\nconst companies = dataCompanies;\n---\n\n<section\n  id=\"companies\"\n  class=\"w-full py-16 lg:py-24 relative bg-bg-cream\"\n  aria-labelledby=\"companies-heading\"\n>\n  <div class=\"max-w-7xl mx-auto px-6 lg:px-12\">\n    <!-- Section Header -->\n    <div class=\"text-center mb-12 lg:mb-16\">\n      <span class=\"inline-block bg-text-main/10 text-text-main rounded-full px-4 py-1.5 text-sm font-medium mb-4\">\n        Our Exhibitors\n      </span>\n      <h2 id=\"companies-heading\" class=\"section-title mb-4\">\n        Participating Companies\n      </h2>\n      <p class=\"text-text-light-blue text-base lg:text-base max-w-2xl mx-auto\">\n        Connect with leading Belgian agrofood companies showcasing premium products and innovative solutions at the Flanders pavilion.\n      </p>\n    </div>\n\n    <!-- Company Grid -->\n    <div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8\">\n      {companies.map((company) => (\n        <CompanyCard\n          companyName={company.name}\n          description={company.short || ''}\n          logoFilename={company.logo}\n          slug={company.slug}\n          products={company.products || []}\n          body={company.bodyHtml || ''}\n        />\n      ))}\n    </div>\n  </div>\n</section>\n"
+        }
+    ]
+}
