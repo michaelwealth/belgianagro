@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 6,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1772804415827,
@@ -32,6 +32,10 @@
                 {
                     "date": 1772806789036,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,9 +7,9 @@\n ---\n \n <section\n   id=\"hero\"\n-  class=\"relative overflow-hidden min-h-screen\"\n+  class=\"relative overflow-hidden disable-min-h-screen\"\n   aria-label=\"Hero section\"\n >\n   <!-- Background Image -->\n   <div class=\"absolute inset-0\" aria-hidden=\"true\">\n"
+                },
+                {
+                    "date": 1773055949849,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -113,9 +113,9 @@\n \n             <!-- Register Link -->\n             <div class=\"mt-4\">\n               <button\n-                class=\"text-sm font-bold text-text-main flex items-center gap-1 hover:gap-2 transition-all duration-200\"\n+                class=\"inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFED00] text-black font-semibold shadow-sm hover:opacity-95 transition-all duration-150\"\n                 data-modal=\"nav-modal\"\n               >\n                 Register interest\n                 <svg class=\"w-3 h-3\" fill=\"currentColor\" viewBox=\"0 0 12 12\" aria-hidden=\"true\">\n"
                 }
             ],
             "date": 1772804415827,

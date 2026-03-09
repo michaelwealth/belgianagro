@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/data/events.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1773055129428,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1773062497604,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n     venue: \"Landmark Event Centre,\",\n     venueDetail: \"Victoria Island, Lagos\",\n     type: \"pavilion\",\n     cta: \"Register interest\",\n-    ctaLink: \"https://events.commercium.com\",\n+    ctaLink: \"https://events.commercium.africa/event/register/EV33135281\",\n     order: 1,\n     description:\n       \"Visit the Belgian Pavilion at Agrofood Nigeria 2026 to discover premium agrofood products and innovations from Flanders. Meet six leading Belgian companies and explore partnership opportunities.\",\n   },\n"
+                }
+            ],
+            "date": 1773055129428,
+            "name": "Commit-0",
+            "content": "export type EventItem = {\n  id: string;\n  title: string;\n  date?: string;\n  time?: string;\n  venue?: string;\n  venueDetail?: string;\n  type?: string;\n  cta?: string;\n  ctaLink?: string;\n  order?: number;\n  description?: string;\n};\n\nexport const events: EventItem[] = [\n  {\n    id: \"belgian-pavilion\",\n    title: \"Belgian Pavilion\",\n    date: \"24 – 26 March 2026\",\n    time: \"10:00 – 17:00 Daily\",\n    venue: \"Landmark Event Centre,\",\n    venueDetail: \"Victoria Island, Lagos\",\n    type: \"pavilion\",\n    cta: \"Register interest\",\n    ctaLink: \"https://events.commercium.com\",\n    order: 1,\n    description:\n      \"Visit the Belgian Pavilion at Agrofood Nigeria 2026 to discover premium agrofood products and innovations from Flanders. Meet six leading Belgian companies and explore partnership opportunities.\",\n  },\n];\n"
+        }
+    ]
+}

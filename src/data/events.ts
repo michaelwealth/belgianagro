@@ -22,7 +22,7 @@ export const events: EventItem[] = [
     venueDetail: "Victoria Island, Lagos",
     type: "pavilion",
     cta: "Register interest",
-    ctaLink: "#register",
+    ctaLink: "https://events.commercium.africa/event/register/EV33135281",
     order: 1,
     description:
       "Visit the Belgian Pavilion at Agrofood Nigeria 2026 to discover premium agrofood products and innovations from Flanders. Meet six leading Belgian companies and explore partnership opportunities.",
